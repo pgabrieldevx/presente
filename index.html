@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Um presente para o meu presente!</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+</head>
+    
+<body>
+
+    <div class="container">
+        <!-- ========================================
+             CARD INICIAL COM BOTÃO DE SURPRESA
+             ======================================== -->
+        <div class="card">
+            <h1 style="background: linear-gradient(135deg, #ff4b5c, #ff6b7d); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin: 0 0 20px 0; font-size: 2rem;">Clique aqui minha princesinha💖</h1>
+            
+            <!-- Botão que inicia toda a experiência -->
+            <button id="btnSurpresa" class="botao">Clique aqui amor ❤️‍🩹</button>
+            
+            <!-- Mensagem que aparece após clicar no botão -->
+            <div id="mensagem-inicial" style="display:none; margin-top:20px; color:#d63384;">
+                <p>Expressando todo meu amor por você em um código!!!</p>
+            </div>
+        </div>
+
+        <!-- ========================================
+             MURAL "O QUE EU AMO EM VOCÊ"
+             Aparece após clicar no botão surpresa
+             ======================================== -->
+        <div id="mural" style="display: none;">
+            <h3 style="color: #d63384; font-size: 1.4rem; margin-bottom: 20px;">As coisas que eu amo em você minha mulher 💗</h3>
+            <div class="grade-motivos">
+                <!-- Card 1 - Clique para virar e revelar o motivo -->
+                <div class="card-motivo" onclick="this.classList.toggle('virado')">
+                    <div class="frente">1</div>
+                    <div class="costas">Seu jeito de ser 🤩</div>
+                </div>
+                
+                <!-- Card 2 -->
+                <div class="card-motivo" onclick="this.classList.toggle('virado')">
+                    <div class="frente">2</div>
+                    <div class="costas">Sua fofura e meiguice 🥰</div>
+                </div>
+                
+                <!-- Card 3 -->
+                <div class="card-motivo" onclick="this.classList.toggle('virado')">
+                    <div class="frente">3</div>
+                    <div class="costas">Sua voz incrível 🥹</div>
+                </div>
+                
+                <!-- Card 4 -->
+                <div class="card-motivo" onclick="this.classList.toggle('virado')">
+                    <div class="frente">4</div>
+                    <div class="costas">Seu sorriso 😆</div>
+                </div>
+                
+                <!-- Card 5 -->
+                <div class="card-motivo" onclick="this.classList.toggle('virado')">
+                    <div class="frente">5</div>
+                    <div class="costas">Sua inteligência 🤯</div>
+                </div>
+                
+                <!-- Card 6 -->
+                <div class="card-motivo" onclick="this.classList.toggle('virado')">
+                    <div class="frente">6</div>
+                    <div class="costas">Sua risada 🫨</div>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- ========================================
+             ENVELOPE PARA ABRIR A CARTA
+             Redireciona para carta.html ao clicar
+             ======================================== -->
+        <div id="envelope-container">
+            <div class="envelope">
+                <div class="envelope-body">
+                    <div class="envelope-flap"></div>
+                    <div class="envelope-heart">💌</div>
+                </div>
+            </div>
+            <div class="envelope-text">Clique para abrir a carta!</div>
+        </div>
+    </div>
+
+    <!-- Toast de notificação (não usado atualmente) -->
+    <div id="toast" class="toast"></div>
+
+    <script>
+        /* ========================================
+           INICIALIZAÇÃO DA PÁGINA
+           Executa quando o DOM estiver pronto
+           ======================================== */
+        document.addEventListener("DOMContentLoaded", function() {
+            // Referências aos elementos principais
+            const btnSurpresa = document.getElementById("btnSurpresa");
+            const msgInicial = document.getElementById("mensagem-inicial");
+            const envelopeContainer = document.getElementById("envelope-container");
+            const mural = document.getElementById("mural");
+           
+
+            /* ========================================
+               EVENTO DO BOTÃO SURPRESA
+               Controla a sequência de aparição dos elementos
+               ======================================== */
+            btnSurpresa.addEventListener("click", function() {
+                console.log("Botão surpresa clicado!");
+                
+                // Esconde o botão e mostra mensagem inicial
+                btnSurpresa.style.display = "none";
+                msgInicial.style.display = "block";
+                
+                // Lança confetes pela tela
+                lancarConfetes();
+                
+                // Mostra o mural após 800ms
+                setTimeout(() => {
+                    mural.style.display = "block";
+                    window.scrollTo({ top: mural.offsetTop - 20, behavior: 'smooth' });
+                }, 800);
+                
+                // Mostra o envelope por último após 2500ms
+                setTimeout(() => {
+                    envelopeContainer.style.display = "block";
+                    window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+                }, 2500);
+            });
+
+            // Adiciona evento de clique no envelope
+            envelopeContainer.addEventListener("click", abrirCarta);
+        
+        });
+
+        /* ========================================
+           FUNÇÃO: ABRIR CARTA
+           Redireciona para a página da carta
+           ======================================== */
+        function abrirCarta() {
+            window.location.href = "carta.html";
+        }
+
+        /* ========================================
+           FUNÇÃO: LANÇAR CONFETES
+           Cria animação de confetes caindo
+           ======================================== */
+        function lancarConfetes() {
+            const emojis = ["💖", "🌹", "✨", "💕", "🎉", "💝", "🌸"];
+            
+            // Cria 50 confetes
+            for (let i = 0; i < 50; i++) {
+                const c = document.createElement("div");
+                c.className = "confete";
+                c.innerText = emojis[Math.floor(Math.random() * emojis.length)];
+                
+                // Posiciona aleatoriamente
+                c.style.left = Math.random() * 100 + "vw";
+                c.style.top = "-50px";
+                c.style.fontSize = `${20 + Math.random() * 15}px`;
+                c.style.animationDuration = `${Math.random() * 3 + 3}s`;
+                document.body.appendChild(c);
+                
+                // Anima a queda
+                setTimeout(() => {
+                    c.style.transform = `translateY(120vh) rotate(${Math.random() * 720}deg)`;
+                    c.style.opacity = "0";
+                }, 100);
+                
+                // Remove do DOM após 5 segundos
+                setTimeout(() => c.remove(), 5000);
+            }
+        }
+
+        /* ========================================
+           FUNÇÃO: MOSTRAR TOAST
+           Exibe notificação temporária (não usada no momento)
+           ======================================== */
+        function mostrarToast(mensagem) {
+            const toast = document.getElementById('toast');
+            toast.textContent = mensagem;
+            toast.classList.add('mostrar');
+            setTimeout(() => toast.classList.remove('mostrar'), 3000);
+        }
+    </script>
+</body>
+</html>

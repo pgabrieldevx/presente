@@ -1,0 +1,345 @@
+@charset "UTF-8";
+
+/* ========================================
+   CONFIGURAÇÕES GERAIS DO BODY
+   ======================================== */
+
+/* Define o layout principal da página */
+body {
+    margin: 0;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #fff0f5 0%, #ffe4e6 50%, #ffcccb 100%);
+    overflow-x: hidden;
+    position: relative;
+}
+
+/* Efeito de fundo animado com círculos flutuantes */
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><radialGradient id="a" cx="50%" cy="50%"><stop offset="0%" stop-color="%23ff69b4" stop-opacity="0.1"/><stop offset="100%" stop-color="%23ffc0cb" stop-opacity="0"/></radialGradient></defs><circle cx="20" cy="20" r="2" fill="url(%23a)"/><circle cx="80" cy="30" r="1.5" fill="url(%23a)"/><circle cx="40" cy="80" r="1" fill="url(%23a)"/><circle cx="90" cy="70" r="1.2" fill="url(%23a)"/></svg>');
+    pointer-events: none;
+    z-index: -1;
+    animation: flutuar 20s infinite linear;
+}
+
+/* Animação de flutuação do fundo */
+@keyframes flutuar {
+    0% { transform: translateY(0) rotate(0deg); }
+    100% { transform: translateY(-100px) rotate(360deg); }
+}
+
+/* ========================================
+   CONTAINER E CARDS PRINCIPAIS
+   ======================================== */
+
+/* Container principal que centraliza todo o conteúdo */
+.container {
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+    position: relative;
+    z-index: 10;
+}
+
+/* Estilo base para todos os cards da página */
+.card {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    padding: 25px;
+    border-radius: 25px;
+    box-shadow: 0 15px 35px rgba(255, 75, 92, 0.2);
+    margin-bottom: 20px;
+    border: 1px solid rgba(255, 75, 92, 0.3);
+}
+
+/* ========================================
+   BOTÃO PRINCIPAL (Clique aqui, amor)
+   ======================================== */
+
+.botao {
+    padding: 15px 30px;
+    font-size: 1.1rem;
+    border: none;
+    border-radius: 50px;
+    background: linear-gradient(135deg, #ff4b5c, #ff6b7d);
+    color: white;
+    cursor: pointer;
+    box-shadow: 0 8px 20px rgba(255, 75, 92, 0.4);
+    font-weight: bold;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Efeito hover do botão principal */
+.botao:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 25px rgba(255, 75, 92, 0.6);
+}
+
+
+/* Diálogo/frase da cena */
+.dialogo {
+    font-style: italic;
+    color: #666;
+    margin: 8px 0 0 0;
+    line-height: 1.3;
+    font-size: 0.9rem;
+}
+
+/* ========================================
+   BOTÃO YOUTUBE (Play vermelho)
+   ======================================== */
+
+.btn-youtube {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #ff0000, #cc0000);
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 15px rgba(255, 0, 0, 0.4);
+    transition: all 0.3s ease;
+    flex-shrink: 0;
+    margin-left: 15px;
+}
+
+/* Efeito hover do botão YouTube */
+.btn-youtube:hover {
+    transform: scale(1.1) rotate(10deg);
+    box-shadow: 0 6px 20px rgba(255, 0, 0, 0.6);
+}
+
+/* Ícone de play dentro do botão */
+.btn-youtube::after {
+    content: '▶';
+    color: white;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+/* Esconde o botão YouTube se não houver vídeo */
+.sem-video .btn-youtube {
+    display: none;
+}
+
+/* ========================================
+   ENVELOPE ANIMADO (Carta)
+   ======================================== */
+
+/* Container do envelope - inicialmente escondido */
+#envelope-container {
+    display: none;
+    margin-top: 30px;
+    margin-bottom: 30px;
+    cursor: pointer;
+    perspective: 1000px;
+}
+
+/* Estrutura principal do envelope */
+.envelope {
+    position: relative;
+    width: 200px;
+    height: 140px;
+    margin: 0 auto;
+    animation: balanco 2s ease-in-out infinite;
+}
+
+/* Animação de balanço do envelope */
+@keyframes balanco {
+    0%, 100% { transform: rotate(-3deg); }
+    50% { transform: rotate(3deg); }
+}
+
+/* Corpo do envelope */
+.envelope-body {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #fff8f0, #ffe4d6);
+    border: 3px solid #ff4b5c;
+    border-radius: 5px;
+    position: relative;
+    box-shadow: 0 10px 30px rgba(255, 75, 92, 0.3);
+}
+
+/* Aba superior do envelope */
+.envelope-flap {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 0;
+    border-left: 100px solid transparent;
+    border-right: 100px solid transparent;
+    border-top: 70px solid #ff6b7d;
+    transform-origin: top center;
+    z-index: 2;
+    transition: transform 0.5s ease;
+}
+
+/* Efeito de abrir a aba ao passar o mouse */
+.envelope:hover .envelope-flap {
+    transform: rotateX(-20deg);
+}
+
+/* Coração dentro do envelope */
+.envelope-heart {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 50px;
+    animation: pulsar 1.5s ease-in-out infinite;
+}
+
+/* Animação de pulsação do coração */
+@keyframes pulsar {
+    0%, 100% { transform: translate(-50%, -50%) scale(1); }
+    50% { transform: translate(-50%, -50%) scale(1.1); }
+}
+
+/* Texto abaixo do envelope */
+.envelope-text {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #ff4b5c;
+    animation: brilho 2s ease-in-out infinite;
+}
+
+/* Animação de brilho do texto */
+@keyframes brilho {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.7; }
+}
+
+/* ========================================
+   MURAL "O QUE EU AMO EM VOCÊ"
+   ======================================== */
+
+/* Container do mural - inicialmente escondido */
+#mural {
+    display: none;
+    margin-top: 30px;
+}
+
+/* Grid dos cards de motivos */
+.grade-motivos {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    margin-top: 15px;
+}
+
+/* Card individual com efeito de virar */
+.card-motivo {
+    height: 100px;
+    perspective: 1000px;
+    position: relative;
+}
+
+/* Frente e verso dos cards (base comum) */
+.frente, .costas {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    backface-visibility: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 15px;
+    transition: transform 0.6s;
+    padding: 10px;
+    box-sizing: border-box;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    font-size: 0.85rem;
+    font-weight: bold;
+}
+
+/* Frente do card (mostra o número) */
+.frente { 
+    background: linear-gradient(135deg, #ffb6c1, #ff69b4); 
+    color: white; 
+    font-size: 1.4rem; 
+}
+
+/* Verso do card (mostra o motivo) */
+.costas { 
+    background: linear-gradient(135deg, #ff4b5c, #ff6b7d); 
+    color: white; 
+    transform: rotateY(180deg); 
+    text-align: center; 
+}
+
+/* Estado "virado" - rotaciona a frente */
+.card-motivo.virado .frente { 
+    transform: rotateY(180deg); 
+}
+
+/* Estado "virado" - mostra o verso */
+.card-motivo.virado .costas { 
+    transform: rotateY(360deg); 
+}
+
+/* ========================================
+   EFEITOS VISUAIS (Confetes e Toast)
+   ======================================== */
+
+/* Confetes que caem pela tela */
+.confete { 
+    position: fixed; 
+    z-index: 999; 
+    pointer-events: none; 
+}
+
+/* Notificação toast no canto superior direito */
+.toast {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: linear-gradient(135deg, #ff4b5c, #ff6b7d);
+    color: white;
+    padding: 15px 25px;
+    border-radius: 25px;
+    box-shadow: 0 10px 25px rgba(255,75,92,0.4);
+    transform: translateX(400px);
+    transition: transform 0.4s ease;
+    z-index: 1000;
+    font-weight: bold;
+}
+
+/* Estado visível do toast */
+.toast.mostrar { 
+    transform: translateX(0); 
+}
+
+/* ========================================
+   RESPONSIVIDADE MOBILE
+   ======================================== */
+
+@media (max-width: 480px) {
+    body { 
+        padding: 15px; 
+    }
+
+    }
+    
+    /* Remove margem lateral do botão YouTube */
+    .btn-youtube { 
+        margin-left: 0; 
+        margin-top: 10px; 
+    }

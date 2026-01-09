@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carta de Amor 💌</title>
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+
+    <style>
+        /* ========================================
+           CONFIGURAÇÕES GERAIS DO BODY
+           ======================================== */
+        
+        /* Define o layout da página da carta */
+        body {
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #fff0f5 0%, #ffe4e6 50%, #ffcccb 100%);
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Efeito de fundo animado com círculos flutuantes */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><radialGradient id="a" cx="50%" cy="50%"><stop offset="0%" stop-color="%23ff69b4" stop-opacity="0.1"/><stop offset="100%" stop-color="%23ffc0cb" stop-opacity="0"/></radialGradient></defs><circle cx="20" cy="20" r="2" fill="url(%23a)"/><circle cx="80" cy="30" r="1.5" fill="url(%23a)"/><circle cx="40" cy="80" r="1" fill="url(%23a)"/><circle cx="90" cy="70" r="1.2" fill="url(%23a)"/></svg>');
+            pointer-events: none;
+            z-index: -1;
+            animation: flutuar 20s infinite linear;
+        }
+
+        /* Animação de flutuação do fundo */
+        @keyframes flutuar {
+            0% { transform: translateY(0) rotate(0deg); }
+            100% { transform: translateY(-100px) rotate(360deg); }
+        }
+
+        /* ========================================
+           CONTAINER PRINCIPAL
+           ======================================== */
+        
+        /* Container centralizado da carta */
+        .container {
+            width: 100%;
+            max-width: 700px;
+            text-align: center;
+            position: relative;
+            z-index: 10;
+            padding-bottom: 20px;
+        }
+
+        /* ========================================
+           PLAYER DE MÚSICA PERSONALIZADO
+           ======================================== */
+        
+        .music-player {
+            background: linear-gradient(135deg, #ff4b5c, #ff6b7d);
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 25px;
+            box-shadow: 0 10px 30px rgba(255, 75, 92, 0.4);
+            animation: aparecer 0.8s ease-out;
+        }
+
+        .music-info {
+            color: white;
+            margin-bottom: 15px;
+        }
+
+        .music-info h3 {
+            margin: 0 0 5px 0;
+            font-size: 1.3rem;
+            font-weight: bold;
+        }
+
+        .music-info p {
+            margin: 0;
+            font-size: 0.95rem;
+            opacity: 0.9;
+        }
+
+        .player-controls {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 15px;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+        }
+
+        .play-button {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: white;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            color: #ff4b5c;
+            transition: all 0.3s ease;
+            flex-shrink: 0;
+        }
+
+        .play-button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 5px 15px rgba(255, 255, 255, 0.5);
+        }
+
+        .progress-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 10px;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: white;
+            width: 0%;
+            transition: width 0.1s linear;
+            border-radius: 10px;
+        }
+
+        .time-display {
+            display: flex;
+            justify-content: space-between;
+            color: white;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        /* ========================================
+           CARD DA CARTA COM SCROLL
+           Contém todo o conteúdo da mensagem
+           ======================================== */
+        
+        .carta {
+            background: rgba(255, 255, 255, 0.98);
+            padding: 40px 30px;
+            border-radius: 20px;
+            border-left: 6px solid #ff4b5c;
+            text-align: left;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            backdrop-filter: blur(10px);
+            animation: aparecer 1s ease-out;
+            max-height: 600px;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        /* Estilização da barra de rolagem */
+        .carta::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .carta::-webkit-scrollbar-track {
+            background: rgba(255, 75, 92, 0.1);
+            border-radius: 10px;
+        }
+
+        .carta::-webkit-scrollbar-thumb {
+            background: linear-gradient(135deg, #ff4b5c, #ff6b7d);
+            border-radius: 10px;
+        }
+
+        .carta::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(135deg, #ff6b7d, #ff4b5c);
+        }
+
+        /* Animação de entrada da carta */
+        @keyframes aparecer {
+            from {
+                opacity: 0;
+                transform: translateY(30px) scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        /* ========================================
+           ELEMENTOS TEXTUAIS DA CARTA
+           ======================================== */
+        
+        /* Título da carta */
+        .carta h2 {
+            color: #ff4b5c;
+            margin-top: 0;
+            font-size: 2rem;
+            text-align: center;
+            margin-bottom: 30px;
+            position: sticky;
+            top: 0;
+            background: rgba(255, 255, 255, 0.98);
+            padding: 10px 0;
+            z-index: 10;
+        }
+
+        /* Parágrafos da carta */
+        .carta p {
+            font-size: 1.05rem;
+            line-height: 2;
+            color: #333;
+            margin-bottom: 25px;
+            text-align: justify;
+        }
+
+        /* Texto em negrito (destaque) */
+        .carta strong {
+            color: #ff4b5c;
+        }
+
+        /* ========================================
+           ASSINATURA
+           ======================================== */
+        
+        /* Estilo da assinatura no final da carta */
+        .assinatura {
+            text-align: right;
+            font-style: italic;
+            color: #d63384;
+            margin-top: 30px;
+            font-size: 1.2rem;
+            padding-bottom: 10px;
+        }
+
+        /* ========================================
+           BOTÃO VOLTAR
+           ======================================== */
+        
+        /* Botão para retornar à página inicial */
+        .botao-voltar {
+            display: inline-block;
+            margin-top: 30px;
+            padding: 15px 40px;
+            font-size: 1.1rem;
+            border: none;
+            border-radius: 50px;
+            background: linear-gradient(135deg, #ff4b5c, #ff6b7d);
+            color: white;
+            cursor: pointer;
+            box-shadow: 0 8px 20px rgba(255, 75, 92, 0.4);
+            font-weight: bold;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+
+        /* Efeito hover do botão voltar */
+        .botao-voltar:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 25px rgba(255, 75, 92, 0.6);
+        }
+
+        /* ========================================
+           EFEITOS VISUAIS
+           ======================================== */
+        
+        /* Confetes que caem pela tela */
+        .confete {
+            position: fixed;
+            z-index: 999;
+            pointer-events: none;
+            transition: all 3s ease-out;
+        }
+
+        /* Corações flutuantes no fundo */
+        .coracao-flutuante {
+            position: fixed;
+            font-size: 30px;
+            animation: flutuar-coracao 6s ease-in-out infinite;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        /* Animação dos corações flutuantes */
+        @keyframes flutuar-coracao {
+            0%, 100% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 0.6;
+            }
+            50% {
+                transform: translateY(-20px) rotate(10deg);
+                opacity: 1;
+            }
+        }
+
+        /* ========================================
+           RESPONSIVIDADE MOBILE
+           ======================================== */
+        
+        @media (max-width: 768px) {
+            body { 
+                padding: 15px; 
+            }
+            
+            .container {
+                max-width: 100%;
+            }
+            
+            .carta { 
+                padding: 30px 20px;
+                max-height: 70vh;
+            }
+            
+            .carta h2 { 
+                font-size: 1.6rem;
+                margin-bottom: 20px;
+                padding: 15px 0 10px 0;
+            }
+            
+            .carta p { 
+                font-size: 1rem;
+                line-height: 1.9;
+                text-align: left;
+                margin-bottom: 20px;
+            }
+
+            .music-player {
+                padding: 15px;
+            }
+
+            .music-info h3 {
+                font-size: 1.1rem;
+            }
+
+            .music-info p {
+                font-size: 0.85rem;
+            }
+
+            .player-controls {
+                gap: 10px;
+                padding: 12px;
+            }
+
+            .play-button {
+                width: 45px;
+                height: 45px;
+                font-size: 18px;
+            }
+
+            .time-display {
+                font-size: 0.75rem;
+            }
+
+            .assinatura {
+                font-size: 1.05rem;
+            }
+
+            .botao-voltar {
+                padding: 12px 30px;
+                font-size: 1rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding: 10px;
+            }
+
+            .carta {
+                padding: 25px 18px;
+                max-height: 65vh;
+            }
+
+            .carta h2 {
+                font-size: 1.5rem;
+                padding: 12px 0 8px 0;
+            }
+
+            .carta p {
+                font-size: 0.95rem;
+                line-height: 1.8;
+                margin-bottom: 18px;
+            }
+
+            .music-info h3 {
+                font-size: 1rem;
+            }
+
+            .player-controls {
+                gap: 8px;
+                padding: 10px;
+            }
+
+            .play-button {
+                width: 40px;
+                height: 40px;
+                font-size: 16px;
+            }
+
+            .assinatura {
+                font-size: 1rem;
+            }
+
+            .botao-voltar {
+                padding: 12px 25px;
+                font-size: 0.95rem;
+            }
+        }
+
+        @media (max-width: 360px) {
+            .carta {
+                padding: 20px 15px;
+                max-height: 60vh;
+            }
+
+            .carta p {
+                font-size: 0.9rem;
+                line-height: 1.7;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- ========================================
+             PLAYER DE MÚSICA
+             ======================================== -->
+        <div class="music-player">
+            <div class="music-info">
+                <h3>🎸 Livin' On A Prayer</h3>
+                <p>Bon Jovi - Nossa música ❤️</p>
+            </div>
+            <div class="player-controls">
+                <button class="play-button" id="playBtn">▶</button>
+                <div class="progress-container">
+                    <div class="progress-bar" id="progressBar">
+                        <div class="progress-fill" id="progressFill"></div>
+                    </div>
+                    <div class="time-display">
+                        <span id="currentTime">0:00</span>
+                        <span id="duration">0:00</span>
+                    </div>
+                </div>
+            </div>
+            <audio id="audio" src="Livin' On A Prayer.mp3"></audio>
+        </div>
+
+        <!-- ========================================
+             CONTEÚDO DA CARTA DE ANIVERSÁRIO
+             ======================================== -->
+        <div class="carta">
+            <!-- Título principal -->
+            <h2>Feliz Aniversário! 🎂🕯️</h2>
+            
+            <!-- Saudação inicial -->
+            <p>Minha princesinha,</p>
+            
+            <!-- Parágrafo 1 - Introdução -->
+            <p>O que dizer de você, minha princesa, a pessoa que mudou minha vida por completo e me mostrou o que é amor de verdade? Antes de você, eu não sabia o que era cuidado, preocupação, genuinamente felicidade, ao ponto de só falar com você ser o suficiente para me fazer rir e sorrir igual um idiota. Sua existência é um presente para mim e eu vou aproveitar e agradecer para sempre de todas as formas possíveis. Enquanto houver ar em meus pulmões, eu quero poder olhar dentro dos seus lindos olhos e dizer que eu te amo. Ver seu sorriso lindo e deslumbrante no seu rosto é o suficiente para fazer tudo o que eu faço e farei por você valer a pena. Você me transformou e vem me transformando em uma pessoa melhor do que eu jamais fui em toda minha vida inteira. Eu gostaria de poder olhar nos seus olhos e te dizer tudo que eu sinto de forma espontânea, pegando no seu rosto lindo e fofo, para você ver de perto o brilho no meu olhar ao falar e olhar para você, e eu já sei disso porque eu sinto tantas coisas mesmo estando tão longe. Você me faz alucinar nos meus próprios pensamentos como se eu estivesse delirando com uma droga psicodélica, mas é tudo amor, é uma sensação de que eu sou tão fraco e vulnerável quando eu estou com você. Eu viro um garoto no fundamental apaixonado pela colega de classe em segredo, porque eu me sinto tão bobo, empolgado e o tempo se torna tão inexistente. Quando estou com você, tudo parece tão leve que minha mente flutua, da mesma maneira que uma boia em alto mar. Não importa todo o caos e ondas em volta, eu estarei flutuando porque é essa a sensação que você me traz. Eu sou o homem mais sortudo do mundo por ter encontrado a garota mais incrível que já existiu nesse mundo todo. Eu preciso e quero fazer tanto por você, nada e nem ninguém me fez tão feliz quanto você faz e eu acho que nunca sentirei nada assim na minha vida de novo, então eu quero, quando eu te ver, aproveitar cada momento com você, minha garotinha linda. Você é definitivamente o amor da minha vida e eu tenho certeza disso. Eu quero que você saiba que do dia que eu descobri que te amava até o último dia da minha vida eu quero que você seja minha. Eu quero você até o ar do meu pulmão se esgotar, até o meu coração parar de bater e eu deixar esse mundo. Eu não sou mais eu mesmo sem você, você é parte de mim e da minha vida, eu sou o pepe da nini.</p>
+            
+            <!-- Parágrafo 2 - Sentimentos -->
+            <p>Agora falando sobre seu aniversário fazendo 20 anos. Meu amor, e ficando mais velha. Eu sei o quanto foi difícil para você a sua vida toda pelo tipo de pessoa e de garota que você é, e eu sei que não vai virar uma maravilha do dia para a noite, as coisas vão ser difíceis. Eu sei da sua situação com seus pais, com a faculdade e até com as pessoas num geral, e pode ter certeza que eu te entendo bem mesmo em relação a isso. Mas eu também te digo que eu serei seu porto seguro e não importa quando ou onde, eu vou estar ao seu lado para você chorar, rir, pedir conselhos, pedir socorro, ou só um abraço bem apertado e um carinho. Eu não sei o que vai acontecer daqui para frente, mas eu quero que, independente do que seja, que seja com nós dois juntos, e em meio a tantas incertezas do futuro das nossas vidas, você é a minha única e maior certeza, amor. Eu quero que você seja uma mulher de sucesso porque você merece para caralho, só por ser essa garota doce, meiga, fofa e maravilhosa que você é. Você merece o mundo inteiro só para você. Porém, além disso tudo, você ainda é tão inteligente e esforçada, e eu te digo de verdade e de coração: se você quiser deixar a faculdade, continuar, fazer outra, arrumar um emprego, não importa o que seja, você vai fazer bem e com excelência porque eu sei a garota foda que você é, e quero sua felicidade independente do que você esteja fazendo. Tudo que eu mais sonho para nós dois é a nossa felicidade. Quero que você cresça como pessoa (não fisicamente, ou terei que andar com um banquinho para te beijar) e que você seja incrível da maneira que Deus planeja para você.</p>
+            
+            <!-- Parágrafo 3 - Explicação do site -->
+            <p>E um pouquinho sobre tudo que eu imagino para nós: eu penso na nossa vida tão boa, sabia? E eu realmente não consigo não pensar em tudo que vamos viver juntos nem sequer um dia da minha vida, e eu não estou brincando. Eu, a todo momento do meu dia, estou pensando em nós de alguma maneira. Eu nunca me senti tão apaixonado e parece que cada dia que passa as coisas ficam ainda mais reais e próximas de ficarmos juntos, mesmo que por um tempo limitado, rindo e se abraçando. Creio que nossos momentos juntos serão os mais sinceros e puros, e é estranho para mim pensar nisso porque não sou a pessoa mais sociável do mundo, mas eu gostaria tanto de passar um dia eu e você sem consumir nenhuma tela, sabia? Sem despertador, sem ver TV, sem ver série, sem ligar um PC, nada, só acordar e fazer as coisas juntos conversando um com o outro e se divertindo ou falando sobre a vida. Eu quero viver cada momento único e especial com você e o melhor de tudo: eu não consigo me imaginar fazendo nenhuma dessas coisas com qualquer outra pessoa. Eu quero viajar o mundo e o Brasil com você e ninguém mais, quero que você seja minha companhia para todo e qualquer momento, quero aprender coisas com você, viver momentos inesquecíveis, quero te dar tudo que você merece, quero ir para lugares com vistas lindas e apreciá-las com você, pensando no quanto somos felizes juntos, olhando nos seus olhos, vendo que nenhuma paisagem vai ser mais linda que seu sorriso e sentindo-me tão vivo ao seu lado. Por último e não menos importante: eu estou ouvindo essa música que você colocou para tocar enquanto lê esse texto e eu não consigo deixar de ver a gente nessa letra. Claro que não tudo, mas a parte em que diz "We've got each other and that is a lot for love", e nada mais simbólico para você do que essa música se chamar "Livin' On A Prayer". Eu sinto que essa música fala tanto sobre nós, sabe? Eu gosto tanto dessa música e principalmente porque descobri ela quando começamos a conversar, então eu sinto que essa é a nossa música de verdade e de coração, e mesmo que seja um rock e antigo, eu acho que pode ser a nossa música, né minha princesa? Eu só quero, de forma simples, dizer que você é a pessoa que eu mais amo no mundo e agradeço por estar comigo e tudo que fez por mim e um feliz aniversário!!!</p>
+            
+            <!-- Assinatura da carta -->
+            <div class="assinatura">
+                Com todo o amor do mundo,<br>
+                Seu namoradinho apaixonado 💘
+            </div>
+        </div>
+
+        <!-- ========================================
+             BOTÃO DE NAVEGAÇÃO
+             ======================================== -->
+        <div style="text-align: center;">
+            <!-- Link para voltar à página inicial -->
+            <a href="index.html" class="botao-voltar">← Voltar para o início</a>
+        </div>
+    </div>
+
+    <script>
+        /* ========================================
+           PLAYER DE MÚSICA
+           ======================================== */
+        const audio = document.getElementById('audio');
+        const playBtn = document.getElementById('playBtn');
+        const progressBar = document.getElementById('progressBar');
+        const progressFill = document.getElementById('progressFill');
+        const currentTimeEl = document.getElementById('currentTime');
+        const durationEl = document.getElementById('duration');
+
+        let isPlaying = false;
+
+        // Função para formatar tempo
+        function formatTime(seconds) {
+            const mins = Math.floor(seconds / 60);
+            const secs = Math.floor(seconds % 60);
+            return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
+        }
+
+        // Play/Pause
+        playBtn.addEventListener('click', () => {
+            if (isPlaying) {
+                audio.pause();
+                playBtn.textContent = '▶';
+            } else {
+                audio.play();
+                playBtn.textContent = '⏸';
+            }
+            isPlaying = !isPlaying;
+        });
+
+        // Atualizar duração quando o áudio carregar
+        audio.addEventListener('loadedmetadata', () => {
+            durationEl.textContent = formatTime(audio.duration);
+        });
+
+        // Atualizar progresso
+        audio.addEventListener('timeupdate', () => {
+            const progress = (audio.currentTime / audio.duration) * 100;
+            progressFill.style.width = progress + '%';
+            currentTimeEl.textContent = formatTime(audio.currentTime);
+        });
+
+        // Quando a música terminar
+        audio.addEventListener('ended', () => {
+            playBtn.textContent = '▶';
+            isPlaying = false;  
+            progressFill.style.width = '0%';
+        });
+
+        // Clicar na barra de progresso
+        progressBar.addEventListener('click', (e) => {
+            const rect = progressBar.getBoundingClientRect();
+            const percent = (e.clientX - rect.left) / rect.width;
+            audio.currentTime = percent * audio.duration;
+        });
+
+        /* ========================================
+           INICIALIZAÇÃO DA PÁGINA
+           Executa efeitos visuais ao carregar
+           ======================================== */
+        window.addEventListener('load', function() {
+            lancarConfetes();
+            criarCoracoesBackground();
+        });
+
+        /* ========================================
+           FUNÇÃO: LANÇAR CONFETES
+           Cria animação de confetes caindo na tela
+           ======================================== */
+        function lancarConfetes() {
+            const emojis = ["💖", "🌹", "✨", "💕", "🎉", "💝", "🌸", "💗", "🎀"];
+            
+            for (let i = 0; i < 60; i++) {
+                setTimeout(() => {
+                    const c = document.createElement("div");
+                    c.className = "confete";
+                    c.innerText = emojis[Math.floor(Math.random() * emojis.length)];
+                    
+                    c.style.left = Math.random() * 100 + "vw";
+                    c.style.top = "-50px";
+                    c.style.fontSize = `${20 + Math.random() * 20}px`;
+                    document.body.appendChild(c);
+                    
+                    setTimeout(() => {
+                        c.style.transform = `translateY(120vh) rotate(${Math.random() * 720}deg)`;
+                        c.style.opacity = "0";
+                    }, 100);
+                    
+                    setTimeout(() => c.remove(), 6000);
+                }, i * 100);
+            }
+        }
+
+        /* ========================================
+           FUNÇÃO: CRIAR CORAÇÕES NO FUNDO
+           Adiciona corações flutuantes decorativos
+           ======================================== */
+        function criarCoracoesBackground() {
+            const coracoes = ["💕", "💖", "💗", "💝"];
+            
+            for (let i = 0; i < 8; i++) {
+                const coracao = document.createElement("div");
+                coracao.className = "coracao-flutuante";
+                coracao.innerText = coracoes[Math.floor(Math.random() * coracoes.length)];
+                
+                coracao.style.left = Math.random() * 90 + "vw";
+                coracao.style.top = Math.random() * 80 + "vh";
+                
+                coracao.style.animationDelay = Math.random() * 3 + "s";
+                coracao.style.animationDuration = (4 + Math.random() * 3) + "s";
+                
+                document.body.appendChild(coracao);
+            }
+        }
+    </script>
+</body>
+</html>
